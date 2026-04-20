@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Post } from "@/types/post";
 
 async function getPosts(): Promise<Post[]> {
@@ -24,16 +26,23 @@ export default async function BlogPage() {
 
       <div className="mt-8 space-y-4">
         {posts.map((post) => (
-          <article key={post.id} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-900">{post.title}</h2>
-            <p className="mt-2 line-clamp-2 text-sm text-gray-600">{post.body}</p>
-            <Link
-              href={`/blog/${post.id}`}
-              className="mt-3 inline-flex text-sm font-medium text-blue-600 hover:text-blue-700"
-            >
-              Xem chi tiết →
-            </Link>
-          </article>
+          <Card key={post.id}>
+            <CardHeader>
+              <div className="flex items-center justify-between gap-3">
+                <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                <Badge variant="secondary">Tác giả #{post.userId}</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="line-clamp-2 text-sm text-muted-foreground">{post.body}</p>
+              <Link
+                href={`/blog/${post.id}`}
+                className="mt-3 inline-flex text-sm font-medium text-blue-600 hover:text-blue-700"
+              >
+                Xem chi tiết →
+              </Link>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </section>

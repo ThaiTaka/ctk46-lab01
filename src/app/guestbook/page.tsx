@@ -1,4 +1,7 @@
 import GuestbookForm from "@/components/guestbook-form";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { guestbookEntries } from "@/data/guestbook";
 import { deleteGuestbookEntry } from "./actions";
 
@@ -13,14 +16,18 @@ export default function GuestbookPage() {
         <h1 className="text-3xl font-bold text-gray-900">Guestbook</h1>
         <p className="text-gray-600">Những lời nhắn mới nhất từ bạn bè và người xem portfolio.</p>
 
-        <div className="space-y-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Danh sách lời nhắn</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
           {guestbookEntries.length === 0 ? (
             <p className="rounded-lg border border-dashed border-gray-300 p-4 text-sm text-gray-500">
               Chưa có lời nhắn nào.
             </p>
           ) : (
-            guestbookEntries.map((entry) => (
-              <article key={entry.id} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+            guestbookEntries.map((entry, index) => (
+              <div key={entry.id}>
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="font-semibold text-gray-900">{entry.name}</p>
@@ -31,18 +38,17 @@ export default function GuestbookPage() {
                   </div>
 
                   <form action={deleteGuestbookEntry.bind(null, entry.id)}>
-                    <button
-                      type="submit"
-                      className="rounded-md border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50"
-                    >
+                    <Button type="submit" variant="destructive" size="sm">
                       Xóa
-                    </button>
+                    </Button>
                   </form>
                 </div>
-              </article>
+                {index < guestbookEntries.length - 1 ? <Separator className="mt-4" /> : null}
+              </div>
             ))
           )}
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );

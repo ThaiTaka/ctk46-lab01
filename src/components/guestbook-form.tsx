@@ -2,6 +2,11 @@
 
 import { useActionState } from "react";
 import { createGuestbookEntry } from "@/app/guestbook/actions";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 type GuestbookActionState = {
   success: boolean;
@@ -24,50 +29,33 @@ export default function GuestbookForm() {
   );
 
   return (
-    <form action={formAction} className="space-y-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900">Để lại lời nhắn</h2>
+    <Card>
+      <CardHeader>
+        <CardTitle>Để lại lời nhắn</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form action={formAction} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Tên</Label>
+            <Input id="name" name="name" type="text" placeholder="Nhập tên của bạn" required />
+            {state.errors?.name ? <p className="text-xs text-red-600">{state.errors.name[0]}</p> : null}
+          </div>
 
-      <div className="space-y-1">
-        <label htmlFor="name" className="text-sm font-medium text-gray-700">
-          Tên
-        </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none ring-blue-500 focus:ring"
-          placeholder="Nhập tên của bạn"
-          required
-        />
-        {state.errors?.name ? <p className="text-xs text-red-600">{state.errors.name[0]}</p> : null}
-      </div>
+          <div className="space-y-2">
+            <Label htmlFor="message">Lời nhắn</Label>
+            <Textarea id="message" name="message" rows={4} placeholder="Viết lời nhắn..." required />
+            {state.errors?.message ? <p className="text-xs text-red-600">{state.errors.message[0]}</p> : null}
+          </div>
 
-      <div className="space-y-1">
-        <label htmlFor="message" className="text-sm font-medium text-gray-700">
-          Lời nhắn
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          rows={4}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none ring-blue-500 focus:ring"
-          placeholder="Viết lời nhắn..."
-          required
-        />
-        {state.errors?.message ? <p className="text-xs text-red-600">{state.errors.message[0]}</p> : null}
-      </div>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? "Đang gửi..." : "Gửi lời nhắn"}
+          </Button>
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {isPending ? "Đang gửi..." : "Gửi lời nhắn"}
-      </button>
-
-      {state.message ? (
-        <p className={`text-sm ${state.success ? "text-green-600" : "text-red-600"}`}>{state.message}</p>
-      ) : null}
-    </form>
+          {state.message ? (
+            <p className={`text-sm ${state.success ? "text-green-600" : "text-red-600"}`}>{state.message}</p>
+          ) : null}
+        </form>
+      </CardContent>
+    </Card>
   );
 }
